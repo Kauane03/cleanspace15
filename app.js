@@ -62,7 +62,7 @@ const starterQuickTasks = [
   { id: "starter-1", name: "Lavar a louça que ficou suja", category: "daily", done: false },
   { id: "starter-2", name: "Guardar a louça limpa", category: "daily", done: false },
   { id: "starter-3", name: "Limpar a superfície do fogão", category: "focus", done: false },
-  { id: "starter-4", name: "Limpar a superfície da pia", category: "focus", done: false },
+  { id: "starter-4", name: "Limpar maçanetas", category: "occasional", done: false },
   { id: "starter-5", name: "Guardar uma coisa que ficou fora do lugar", category: "occasional", done: false },
 ];
 
@@ -76,6 +76,9 @@ const elements = {
   timerButtonLabel: document.querySelector("#timer-button-label"),
   timerReset: document.querySelector("#timer-reset"),
   quickClock: document.querySelector(".quick-clock"),
+  moodStatus: document.querySelector("#mood-status"),
+  moodEmoji: document.querySelector("#mood-emoji"),
+  moodText: document.querySelector("#mood-text"),
   welcomeNote: document.querySelector(".welcome-note"),
   welcomeMood: document.querySelector("#welcome-mood"),
   welcomeSubtitle: document.querySelector("#welcome-subtitle"),
@@ -457,6 +460,23 @@ function renderQuickTasks() {
 
   // Atualização do estado de humor e progresso (Coerência com a Proposta DSW)
   const allDone = quickState.tasks.length > 0 && completed === quickState.tasks.length;
+  const hasPending = quickState.tasks.some((task) => !isQuickTaskDone(task));
+
+  // Elemento visual da proposta: rostinho triste (😢) com pendências -> rostinho feliz (😃) ao concluir
+  if (elements.moodStatus && elements.moodEmoji && elements.moodText) {
+    if (quickState.tasks.length === 0 || !hasPending) {
+      elements.moodStatus.classList.remove("triste");
+      elements.moodStatus.classList.add("feliz");
+      elements.moodEmoji.textContent = "😃";
+      elements.moodText.textContent = "Tudo concluído!";
+    } else {
+      elements.moodStatus.classList.remove("feliz");
+      elements.moodStatus.classList.add("triste");
+      elements.moodEmoji.textContent = "😢";
+      elements.moodText.textContent = "Tarefas pendentes";
+    }
+  }
+
   if (elements.welcomeNote && elements.welcomeMood && elements.welcomeSubtitle) {
     if (allDone) {
       elements.welcomeNote.classList.add("mood-happy");

@@ -2571,3 +2571,41 @@ h2::first-letter {
 .welcome-note.mood-pending {
   border-left: 3px solid var(--warm-linen) !important;
 }
+
+
+/* Estado emocional (Proposta DSW: triste / feliz) */
+.heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mood-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: var(--type, monospace);
+  font-size: 11px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(58, 64, 56, 0.16);
+}
+
+.mood-status.triste {
+  background: #fcf4ee;
+  border-color: #d69f83;
+  color: #8c5237;
+}
+
+.mood-status.feliz {
+  background: #eef5eb;
+  border-color: var(--sage-green, #6b8e73) !important;
+  color: var(--sage-green, #6b8e73);
+  box-shadow: 0 0 10px rgba(107, 142, 115, 0.25);
+}
+
+.mood-emoji {
+  font-size: 15px;
+  line-height: 1;
+}
