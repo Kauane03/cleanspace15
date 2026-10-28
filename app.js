@@ -463,16 +463,14 @@ function renderQuickTasks() {
   const hasPending = quickState.tasks.some((task) => !isQuickTaskDone(task));
 
   // Elemento visual da proposta: rostinho triste (😢) com pendências -> rostinho feliz (😃) ao concluir
-  if (elements.moodStatus && elements.moodEmoji && elements.moodText) {
+  if (elements.moodStatus && elements.moodText) {
     if (quickState.tasks.length === 0 || !hasPending) {
       elements.moodStatus.classList.remove("triste");
       elements.moodStatus.classList.add("feliz");
-      elements.moodEmoji.textContent = "😃";
       elements.moodText.textContent = "Tudo concluído!";
     } else {
       elements.moodStatus.classList.remove("feliz");
       elements.moodStatus.classList.add("triste");
-      elements.moodEmoji.textContent = "😢";
       elements.moodText.textContent = "Tarefas pendentes";
     }
   }

@@ -2606,6 +2606,36 @@ h2::first-letter {
 }
 
 .mood-emoji {
-  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+}
+
+.face-svg {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.mood-status.triste .face-happy {
+  display: none;
+}
+
+.mood-status.triste .face-sad {
+  display: block;
+}
+
+.mood-status.feliz .face-sad {
+  display: none;
+}
+
+.mood-status.feliz .face-happy {
+  display: block;
+  animation: gentle-pop 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes gentle-pop {
+  0% { transform: scale(0.7); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
