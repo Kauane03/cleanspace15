@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#efe9df" />
+    <meta
+      name="description"
+      content="Organize tarefas domésticas em sessões de 15 minutos ou planeje a semana por cômodo."
+    />
+    <title>CleanSpace 15 — um cantinho de cada vez</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&family=Special+Elite&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="CleanSpace 15, início">
+          <span class="brand-mark" aria-hidden="true">清</span>
+          <span class="brand-copy">
+            <strong>CleanSpace <span>15</span></strong>
+          </span>
+        </a>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="welcome-title">
+          <div class="hero-masthead" aria-hidden="true">
+            <span class="hero-masthead-title">Lar &amp; Calma</span>
+            <span id="hero-date">—</span>
+          </div>
+
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <h1 id="welcome-title" class="kinetic">
+                <span class="line">Sua casa</span>
+                <span class="line"><em>não precisa</em></span>
+                <span class="line">ser perfeita.</span>
+              </h1>
+              <p class="hero-lede">
+                Se hoje tudo parecer demais, não precisa dar conta de tudo. Escolha um pequeno passo,
+                no seu ritmo — ele já conta.
+              </p>
+            </div>
+
+            <figure class="hero-photo film">
+              <img src="tempo.jpeg" alt="Ampulheta com areia clara sobre uma mesa iluminada pelo sol da tarde" />
+              <figcaption><em>fig. 01</em> — o tempo, sem pressa.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <div class="mode-tabs" role="tablist" aria-label="Escolha como quer organizar as tarefas">
+          <button
+            type="button"
+            class="mode-tab is-active"
+            id="quick-tab"
+            role="tab"
+            aria-selected="true"
+            aria-controls="quick-panel"
+            data-mode="quick"
+          >
+            <span class="mode-tab-title">15 minutos</span>
+          </button>
+          <button
+            type="button"
+            class="mode-tab"
+            id="planner-tab"
+            role="tab"
+            aria-selected="false"
+            aria-controls="planner-panel"
+            data-mode="planner"
+          >
+            <span class="mode-tab-title">Planejar semana</span>
+          </button>
+        </div>
+
+        <section class="mode-panel quick-panel" id="quick-panel" role="tabpanel" aria-labelledby="quick-tab">
+          <div class="quick-dashboard">
+            <section class="quick-tasks panel" aria-labelledby="quick-title">
+              <div class="section-heading">
+                <div>
+                  <h2 id="quick-title">Tarefas rápidas</h2>
+                </div>
+                <div class="progress-badge" aria-live="polite">
+                  <span id="quick-completed">0</span><span class="progress-divider">/</span><span id="quick-total">0</span>
+                  <small>feitas</small>
+                </div>
+              </div>
+
+              <form class="quick-add-form" id="quick-add-form">
+                <label class="sr-only" for="quick-task-name">Nome da tarefa</label>
+                <input
+                  id="quick-task-name"
+                  name="name"
+                  type="text"
+                  maxlength="70"
+                  placeholder="Qual cantinho você gostaria de cuidar?"
+                  autocomplete="off"
+                  required
+                />
+                <label class="sr-only" for="quick-task-category">Frequência</label>
+                <select id="quick-task-category" name="category">
+                  <option value="daily">Rotina diária</option>
+                  <option value="focus" selected>15 min</option>
+                  <option value="occasional">Quando der</option>
+                </select>
+                <button class="add-button" type="submit">Adicionar</button>
+              </form>
+
+              <div class="category-tabs" role="tablist" aria-label="Filtrar tarefas rápidas">
+                <button class="category-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">
+                  Todas <span class="tab-count" id="quick-count-all">0</span>
+                </button>
+                <button class="category-tab" type="button" role="tab" aria-selected="false" data-filter="daily">
+                  Rotina diária <span class="tab-count" id="quick-count-daily">0</span>
+                </button>
+                <button class="category-tab" type="button" role="tab" aria-selected="false" data-filter="focus">
+                  15 min <span class="tab-count" id="quick-count-focus">0</span>
+                </button>
+                <button class="category-tab" type="button" role="tab" aria-selected="false" data-filter="occasional">
+                  Quando der <span class="tab-count" id="quick-count-occasional">0</span>
+                </button>
+              </div>
+
+              <ul class="quick-task-list" id="quick-task-list" aria-live="polite"></ul>
+              <div class="quick-empty" id="quick-empty" hidden>
+                <strong>Nenhuma tarefa por aqui.</strong>
+              </div>
+              <div class="quick-footer">
+                <button class="clear-done-button" id="clear-quick-done" type="button">Limpar concluídas</button>
+              </div>
+            </section>
+
+            <aside class="quick-focus panel" aria-labelledby="focus-title">
+              <h2 id="focus-title">Cronômetro</h2>
+              <div class="quick-clock" aria-label="Cronômetro de foco">
+                <span id="timer-caption">TEMPO DE FOCO</span>
+                <strong id="timer-display" aria-live="off">15:00</strong>
+                <span id="timer-status">Sem pressa.</span>
+              </div>
+              <button class="timer-start" id="timer-toggle" type="button" disabled>
+                <span id="timer-button-label">Escolha uma missão</span>
+              </button>
+              <button class="timer-reset" id="timer-reset" type="button" hidden>Recomeçar os 15 min</button>
+            </aside>
+          </div>
+        </section>
+
+        <section
+          class="mode-panel planner-panel"
+          id="planner-panel"
+          role="tabpanel"
+          aria-labelledby="planner-tab"
+          hidden
+        >
+          <figure class="editorial-spread">
+            <div class="film spread-photo">
+              <img src="organizacao.jpeg" alt="Mesa organizada em tons de linho com calendário, caderno e xícara de café" loading="lazy" />
+              <span class="film-stamp" aria-hidden="true">fig. 02</span>
+            </div>
+            <figcaption class="spread-copy">
+              <p class="eyebrow">CAPÍTULO II — ORGANIZAR</p>
+              <p class="spread-title">Uma semana <em>leve</em> cabe em pequenos gestos.</p>
+              <p class="spread-text">
+                Planejar não é se cobrar. É só deixar um bilhetinho para o seu “eu” de amanhã.
+                Mude, apague e recomece quantas vezes quiser.
+              </p>
+            </figcaption>
+          </figure>
+
+          <section class="daily-section" aria-labelledby="daily-title">
+            <div class="section-heading">
+              <div>
+                <h2 id="daily-title">Rotina diária</h2>
+              </div>
+              <span class="section-note" id="selected-date-label"></span>
+            </div>
+            <ul class="daily-list" id="daily-list" aria-live="polite"></ul>
+          </section>
+
+          <section class="calendar-section" aria-labelledby="calendar-title">
+            <div class="calendar-heading">
+              <div>
+                <h2 id="calendar-title">Seu calendário semanal</h2>
+                <p class="section-description">
+                  Selecione um dia para ver as tarefas.
+                </p>
+              </div>
+              <div class="week-summary" aria-live="polite">
+                <span class="summary-label">SEMANA</span>
+                <strong id="week-summary">Carregando…</strong>
+                <span id="week-progress">0 tarefas concluídas</span>
+              </div>
+              <div class="week-navigation" aria-label="Navegar entre semanas">
+                <button type="button" id="previous-week" aria-label="Semana anterior">←</button>
+                <button type="button" id="today-week">Hoje</button>
+                <button type="button" id="next-week" aria-label="Próxima semana">→</button>
+              </div>
+            </div>
+
+            <div class="room-filter" id="room-filter" role="group" aria-label="Filtrar calendário por cômodo">
+              <button type="button" class="room-chip is-active" data-room="all" aria-pressed="true">Todos os cômodos</button>
+              <button type="button" class="room-chip" data-room="cozinha" aria-pressed="false">Cozinha</button>
+              <button type="button" class="room-chip" data-room="quarto" aria-pressed="false">Quarto</button>
+              <button type="button" class="room-chip" data-room="banheiro" aria-pressed="false">Banheiro</button>
+              <button type="button" class="room-chip" data-room="sala" aria-pressed="false">Sala</button>
+              <button type="button" class="room-chip" data-room="roupas" aria-pressed="false">Roupas e armários</button>
+              <button type="button" class="room-chip" data-room="externo" aria-pressed="false">Varanda e quintal</button>
+              <button type="button" class="room-chip" data-room="casa" aria-pressed="false">Casa toda</button>
+            </div>
+
+            <div class="calendar-grid" id="calendar-grid" aria-live="polite"></div>
+            <p class="empty-calendar" id="empty-calendar" hidden>
+              Nenhuma tarefa deste cômodo nesta semana. Você pode deixar esse espaço livre ou adicionar uma tarefa.
+            </p>
+          </section>
+
+          <section class="add-section" aria-labelledby="add-title">
+            <div class="add-heading">
+              <div>
+                <h2 id="add-title">Adicionar uma tarefa</h2>
+              </div>
+            </div>
+            <form id="task-form" class="task-form">
+              <div class="field task-name-field">
+                <label for="task-name">O que você quer fazer?</label>
+                <input
+                  id="task-name"
+                  name="name"
+                  type="text"
+                  maxlength="90"
+                  placeholder="Ex.: limpar os botões do fogão"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="task-room">Cômodo</label>
+                <select id="task-room" name="room">
+                  <option value="cozinha">Cozinha</option>
+                  <option value="quarto">Quarto</option>
+                  <option value="banheiro">Banheiro</option>
+                  <option value="sala">Sala</option>
+                  <option value="roupas">Roupas e armários</option>
+                  <option value="externo">Varanda e quintal</option>
+                  <option value="casa">Casa toda</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="task-frequency">Quando repetir?</label>
+                <select id="task-frequency" name="frequency">
+                  <option value="daily">Todos os dias</option>
+                  <option value="weekly" selected>Uma vez por semana</option>
+                  <option value="monthly">Uma vez por mês</option>
+                </select>
+              </div>
+              <div class="field" id="task-day-field">
+                <label for="task-day">Dia da semana</label>
+                <select id="task-day" name="day">
+                  <option value="1">Segunda-feira</option>
+                  <option value="2">Terça-feira</option>
+                  <option value="3">Quarta-feira</option>
+                  <option value="4">Quinta-feira</option>
+                  <option value="5">Sexta-feira</option>
+                  <option value="6">Sábado</option>
+                  <option value="0">Domingo</option>
+                </select>
+              </div>
+              <div class="field" id="task-month-week-field" hidden>
+                <label for="task-month-week">Semana do mês</label>
+                <select id="task-month-week" name="monthWeek">
+                  <option value="1">1ª semana</option>
+                  <option value="2">2ª semana</option>
+                  <option value="3">3ª semana</option>
+                  <option value="4">4ª semana</option>
+                </select>
+              </div>
+              <button class="add-button" type="submit">Adicionar ao calendário</button>
+            </form>
+          </section>
+
+          <aside class="safety-note" aria-label="Nota de segurança para produtos de limpeza">
+            <strong>Segurança:</strong>
+            não misture produtos de limpeza. Siga os rótulos e mantenha o ambiente ventilado.
+          </aside>
+        </section>
+
+        <section class="interlude" aria-labelledby="interlude-title">
+          <figure class="film interlude-photo">
+            <img src="relaxe.jpeg" alt="Chá verde, livro aberto e manta macia sobre a cama, sob a luz da janela" loading="lazy" />
+            <span class="film-stamp" aria-hidden="true">fig. 03 · pausa</span>
+          </figure>
+          <div class="interlude-copy">
+            <p class="eyebrow">INTERLÚDIO</p>
+            <h2 id="interlude-title" class="interlude-quote">
+              “Descansar também <em>é cuidar</em> da casa — a casa que mora em você.”
+            </h2>
+            <p class="spread-text">
+              Fez uma coisinha hoje? Que bonito. Não fez nada? Tudo bem também.
+              Prepare um chá, abra a janela e deixe a luz entrar. Amanhã a gente continua.
+            </p>
+            <span class="signature">com carinho, CleanSpace 15</span>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
